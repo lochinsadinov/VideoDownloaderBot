@@ -1,10 +1,9 @@
-import asyncio
-from pprint import pprint
-
 import requests
 
 
 # ================================== instagram =========================================
+
+
 async def instagram(post_url: str):  # day = 300
     url = "https://instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com/get-info-rapidapi"
 

@@ -1,9 +1,9 @@
-from db.service import DB
+from db.servise import DB
 
 
 class User(DB):
     def __init__(self, *cols,
-                 user_id: int = None,   
+                 user_id: int = None,
                  first_name: str = None,
                  last_name: str = None,
                  username: str = None,
