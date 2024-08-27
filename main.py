@@ -12,6 +12,7 @@ from api import tiktok, instagram, facebook, snapchat
 from models import User
 
 TOKEN = '7460589468:AAGBO8NYVTFX7Bscr_7QC9a6693IawSwr3s'
+bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 dp = Dispatcher()
 
@@ -27,18 +28,20 @@ async def command_start_handler(message: Message) -> None:
     user = User(**user)
     if not user.select(user_id=message.from_user.id):
         user.insert()
-    await message.answer(f"Assalomu aleykum , {html.bold(message.from_user.full_name)}!")
-    await message.answer('Ssilka jo`nating')
+    await message.answer(f"Hello, {html.bold(message.from_user.full_name)}!")
+    await message.answer('Send a link')
 
 
 @dp.message(F.text.contains('instagram.com'))
 async def instagram_handler(message: Message) -> None:
+    await bot.send_chat_action(chat_id=message.from_user.id, action='upload_video')
     video = await instagram(message.text)
     await message.answer_video(video)
 
 
 @dp.message(F.text.contains('tiktok.com'))
 async def tiktok_handler(message: Message):
+    await bot.send_chat_action(chat_id=message.from_user.id, action='upload_video')
     video, music = await tiktok(message.text)
     await message.answer_video(video)
     await message.answer_audio(music)
@@ -46,6 +49,7 @@ async def tiktok_handler(message: Message):
 
 @dp.message(F.text.contains('facebook.com'))
 async def facebook_handler(message: Message):
+    await bot.send_chat_action(chat_id=message.from_user.id, action='upload_video')
     video = await facebook(message.text)
     await message.answer_video(video)
     # await message.answer_audio(music)
@@ -53,6 +57,7 @@ async def facebook_handler(message: Message):
 
 @dp.message(F.text.contains('snapchat.com'))
 async def snapchat_handler(message: Message):
+    await bot.send_chat_action(chat_id=message.from_user.id, action='upload_video')
     video, title = await snapchat(message.text)
     await message.answer_video(video, caption=f'{title}')
 
@@ -66,8 +71,6 @@ async def echo_handler(message: Message) -> None:
 
 
 async def main() -> None:
-    bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-
     await dp.start_polling(bot)
 
 
